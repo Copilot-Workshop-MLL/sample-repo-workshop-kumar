@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Employee Management</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header class="navbar">
+        <span class="brand">Employee Management</span>
+        <nav>
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="/employees.html">Employees</a>
+            <button id="logout-btn" class="btn-logout">Logout</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section class="welcome-panel">
+            <p class="welcome-kicker">Landing Page</p>
+            <h1 id="welcome-title">Hello there.</h1>
+            <p id="welcome-subtitle" class="welcome-copy">Welcome to your employee dashboard.</p>
+        </section>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Employees</h3>
+                <div class="value" id="total-employees">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Average Salary</h3>
+                <div class="value" id="avg-salary">$0</div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card" style="text-align:left;">
+                <h3>By Department</h3>
+                <ul class="breakdown-list" id="dept-breakdown">
+                    <li><span>Loading…</span></li>
+                </ul>
+            </div>
+            <div class="stat-card" style="text-align:left;">
+                <h3>By Role</h3>
+                <ul class="breakdown-list" id="role-breakdown">
+                    <li><span>Loading…</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>
