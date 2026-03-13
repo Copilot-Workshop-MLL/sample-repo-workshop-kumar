@@ -89,11 +89,16 @@ function getDayAbbr(date) {
 }
 
 // ── Streak ───────────────────────────────────────────────────────────────────
+// Streak counts consecutive calendar days with at least one session.
+// When today has no sessions yet, we look back from yesterday so the streak
+// is preserved until midnight — this is intentional (same behaviour as Duolingo).
 
 function getCurrentStreak(dailySessions) {
     let streak = 0;
     const today = new Date();
-    for (let i = 0; i < 365; i++) {
+    // Cap at 366 days; the loop breaks early as soon as a gap is found,
+    // so this upper bound is only reached for exceptional multi-year streaks.
+    for (let i = 0; i < 366; i++) {
         const d = new Date(today);
         d.setDate(d.getDate() - i);
         const key = d.toISOString().slice(0, 10);
@@ -209,6 +214,7 @@ class GamificationTracker {
         this.progress  = loadProgress();
         this.statsView = 'weekly';
         this._wireStatsToggle();
+        this._watchFocusMode();
         this.renderAll();
     }
 
@@ -317,6 +323,24 @@ class GamificationTracker {
         });
     }
 
+    // Watch for focus-mode changes and set aria-hidden so screen readers skip
+    // the gamification sections (which are visually dimmed in focus mode).
+    _watchFocusMode() {
+        const sections = document.querySelectorAll('.gamification-section');
+        const update = () => {
+            const isFocus = document.documentElement.getAttribute('data-theme') === 'focus';
+            sections.forEach(s => {
+                if (isFocus) {
+                    s.setAttribute('aria-hidden', 'true');
+                } else {
+                    s.removeAttribute('aria-hidden');
+                }
+            });
+        };
+        update();
+        new MutationObserver(update).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    }
+
     // ── Toast notification ───────────────────────────────────────────────────
 
     _showToast(message) {
@@ -328,7 +352,9 @@ class GamificationTracker {
         toast.textContent = message;
         container.appendChild(toast);
 
-        requestAnimationFrame(() => requestAnimationFrame(() => toast.classList.add('visible')));
+        // Use a small timeout so the element is in the DOM before the
+        // CSS transition starts (more reliable than double-rAF).
+        setTimeout(() => toast.classList.add('visible'), 10);
 
         setTimeout(() => {
             toast.classList.remove('visible');
