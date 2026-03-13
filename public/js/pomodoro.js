@@ -1,7 +1,32 @@
 /* ===== Pomodoro Focus Session ===== */
 
 const PREF_KEY = 'pomodoro_prefs';
+const STATE_KEY = 'pomodoro_state';
 const TIMER_RING_CIRCUMFERENCE = 2 * Math.PI * 54; // r=54
+
+// ── Color helpers ────────────────────────────────────────────────────────────
+
+function hexLerp(a, b, t) {
+    const parse = h => [
+        parseInt(h.slice(1, 3), 16),
+        parseInt(h.slice(3, 5), 16),
+        parseInt(h.slice(5, 7), 16)
+    ];
+    const [ar, ag, ab] = parse(a);
+    const [br, bg, bb] = parse(b);
+    const r    = Math.round(ar + (br - ar) * t);
+    const g    = Math.round(ag + (bg - ag) * t);
+    const blue = Math.round(ab + (bb - ab) * t);
+    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${blue.toString(16).padStart(2, '0')}`;
+}
+
+// progress: 1.0 (full time) → 0.0 (elapsed) — smoothly blue → yellow → red
+function lerpTimerColor(progress) {
+    if (progress >= 0.5) {
+        return hexLerp('#4361ee', '#f4a261', (1 - progress) * 2);
+    }
+    return hexLerp('#f4a261', '#e63946', (0.5 - progress) * 2);
+}
 
 class PomodoroTimer {
     constructor() {
@@ -14,6 +39,7 @@ class PomodoroTimer {
         this.timeLeft = this.duration * 60;
 
         this.initDOM();
+        this.restoreTimerState();
         this.applyPrefs();
         this.updateDisplay();
     }
@@ -46,6 +72,41 @@ class PomodoroTimer {
         } catch (_) { /* ignore */ }
     }
 
+    // ── Timer state persistence ──────────────────────────────────────────────
+
+    saveTimerState() {
+        try {
+            localStorage.setItem(STATE_KEY, JSON.stringify({
+                timeLeft: this.timeLeft,
+                duration: this.duration,
+                savedAt: Date.now(),
+                wasRunning: this.running
+            }));
+        } catch (_) { /* ignore */ }
+    }
+
+    restoreTimerState() {
+        try {
+            const raw = localStorage.getItem(STATE_KEY);
+            if (!raw) return;
+            const state = JSON.parse(raw);
+            // Discard saved state if the duration has since been changed
+            if (state.duration !== this.duration) return;
+            let timeLeft = state.timeLeft;
+            if (state.wasRunning) {
+                const elapsed = Math.floor((Date.now() - state.savedAt) / 1000);
+                timeLeft = Math.max(0, timeLeft - elapsed);
+            }
+            this.timeLeft = timeLeft;
+        } catch (_) { /* ignore */ }
+    }
+
+    clearTimerState() {
+        try {
+            localStorage.removeItem(STATE_KEY);
+        } catch (_) { /* ignore */ }
+    }
+
     applyPrefs() {
         this.setTheme(this.prefs.theme);
 
@@ -65,6 +126,8 @@ class PomodoroTimer {
     // ── DOM wiring ───────────────────────────────────────────────────────────
 
     initDOM() {
+        this.card = document.querySelector('.pomodoro-card');
+
         // Duration buttons
         document.querySelectorAll('.duration-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -76,6 +139,7 @@ class PomodoroTimer {
                 this.timeLeft = minutes * 60;
                 document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
+                this.clearTimerState();
                 this.updateDisplay();
             });
         });
@@ -125,13 +189,16 @@ class PomodoroTimer {
         }
         this.running = true;
         document.getElementById('timer-start').textContent = 'Pause';
+        if (this.card) this.card.classList.add('session-active');
         this.playSound('start');
+        this.saveTimerState();
 
         this.interval = setInterval(() => {
             this.timeLeft--;
             // Tick sound is gated here to avoid creating AudioContext objects when disabled
             if (this.prefs.soundTick) this.playSound('tick');
             this.updateDisplay();
+            this.saveTimerState();
             if (this.timeLeft <= 0) {
                 this.complete();
             }
@@ -142,6 +209,8 @@ class PomodoroTimer {
         this.running = false;
         clearInterval(this.interval);
         document.getElementById('timer-start').textContent = 'Resume';
+        if (this.card) this.card.classList.remove('session-active');
+        this.saveTimerState();
     }
 
     resetTimer() {
@@ -149,6 +218,8 @@ class PomodoroTimer {
         clearInterval(this.interval);
         this.timeLeft = this.duration * 60;
         document.getElementById('timer-start').textContent = 'Start';
+        if (this.card) this.card.classList.remove('session-active');
+        this.clearTimerState();
         this.updateDisplay();
     }
 
@@ -156,6 +227,8 @@ class PomodoroTimer {
         this.running = false;
         clearInterval(this.interval);
         document.getElementById('timer-start').textContent = 'Start';
+        if (this.card) this.card.classList.remove('session-active');
+        this.clearTimerState();
         this.playSound('end');
         this.updateDisplay();
     }
@@ -174,16 +247,10 @@ class PomodoroTimer {
         const ring = document.querySelector('.timer-ring-progress');
         ring.style.strokeDashoffset = offset;
 
-        let color;
-        if (progress > 0.5) {
-            color = '#4361ee';
-        } else if (progress > 0.25) {
-            color = '#f4a261';
-        } else {
-            color = '#e63946';
-        }
+        const color = lerpTimerColor(progress);
         ring.style.stroke = color;
         document.getElementById('timer-time').style.color = color;
+        if (this.card) this.card.style.setProperty('--timer-color', color);
     }
 
     // ── Theme ────────────────────────────────────────────────────────────────

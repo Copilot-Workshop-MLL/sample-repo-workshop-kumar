@@ -385,6 +385,7 @@ tr:hover { background: var(--color-row-hover); }
     transition: background 0.3s ease;
     max-width: 480px;
     margin: 0 auto;
+    --timer-color: #4361ee;
 }
 
 /* Circular timer ring */
@@ -408,7 +409,7 @@ tr:hover { background: var(--color-row-hover); }
 
 .timer-ring-progress {
     fill: none;
-    stroke: #4361ee;
+    stroke: var(--timer-color, #4361ee);
     stroke-width: 8;
     stroke-linecap: round;
     /* dasharray = 2 * π * r = 2 * π * 54 ≈ 339.29, matches TIMER_RING_CIRCUMFERENCE in pomodoro.js */
@@ -425,7 +426,7 @@ tr:hover { background: var(--color-row-hover); }
     justify-content: center;
     font-size: 2rem;
     font-weight: 700;
-    color: #4361ee;
+    color: var(--timer-color, #4361ee);
     letter-spacing: 0.04em;
     transition: color 0.8s ease;
 }
@@ -562,6 +563,39 @@ tr:hover { background: var(--color-row-hover); }
     width: 15px;
     height: 15px;
     cursor: pointer;
+}
+
+/* ===== Ambient focus effects (active session) ===== */
+@keyframes focus-ripple {
+    0%   { transform: translate(-50%, -50%) scale(1);   opacity: 0.55; }
+    100% { transform: translate(-50%, -50%) scale(2.4); opacity: 0; }
+}
+
+@keyframes focus-pulse {
+    0%, 100% { box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    50%       { box-shadow: 0 0 40px rgba(67, 97, 238, 0.18), 0 4px 16px rgba(0,0,0,0.1); }
+}
+
+.pomodoro-card.session-active {
+    animation: focus-pulse 3s ease-in-out infinite;
+}
+
+.pomodoro-card.session-active .timer-display::before,
+.pomodoro-card.session-active .timer-display::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid var(--timer-color, #4361ee);
+    animation: focus-ripple 2.4s ease-out infinite;
+    pointer-events: none;
+}
+
+.pomodoro-card.session-active .timer-display::after {
+    animation-delay: 1.2s;
 }
 
 /* ===== Focus mode: hide non-essential sections ===== */
