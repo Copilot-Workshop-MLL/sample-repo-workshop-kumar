@@ -108,9 +108,39 @@
 
             </div>
         </section>
+
+        <!-- ===== Progress & XP ===== -->
+        <section class="gamification-section" aria-label="Progress and XP">
+            <h2 class="section-title">Progress</h2>
+            <div class="gamification-card">
+                <div id="gamification-progress" aria-live="polite"></div>
+            </div>
+        </section>
+
+        <!-- ===== Achievements ===== -->
+        <section class="gamification-section" aria-label="Achievements">
+            <h2 class="section-title">Achievements</h2>
+            <div class="badges-grid" id="gamification-achievements" aria-live="polite"></div>
+        </section>
+
+        <!-- ===== Statistics ===== -->
+        <section class="gamification-section" aria-label="Session statistics">
+            <h2 class="section-title">Statistics</h2>
+            <div class="gamification-card">
+                <div class="stats-tabs" role="group" aria-label="Statistics view">
+                    <button class="stats-tab active" data-view="weekly">Weekly</button>
+                    <button class="stats-tab" data-view="monthly">Monthly</button>
+                </div>
+                <div id="gamification-chart" aria-live="polite"></div>
+            </div>
+        </section>
     </div>
 
+    <!-- Toast notifications -->
+    <div id="toast-container" aria-live="assertive" aria-atomic="true"></div>
+
     <script src="/js/api.js"></script>
+    <script src="/js/gamification.js"></script>
     <script src="/js/dashboard.js"></script>
     <script src="/js/pomodoro.js"></script>
 </body>

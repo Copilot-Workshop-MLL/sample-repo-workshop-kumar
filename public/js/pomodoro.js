@@ -231,6 +231,11 @@ class PomodoroTimer {
         this.clearTimerState();
         this.playSound('end');
         this.updateDisplay();
+
+        // Award XP and check achievements
+        if (window.gamificationTracker) {
+            window.gamificationTracker.recordSession(this.duration);
+        }
     }
 
     // ── Display ──────────────────────────────────────────────────────────────
