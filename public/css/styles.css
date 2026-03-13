@@ -629,3 +629,261 @@ tr:hover { background: var(--color-row-hover); }
     .timer-display { width: 140px; height: 140px; }
     .timer-time { font-size: 1.7rem; }
 }
+
+/* ===== Gamification ===== */
+
+.gamification-section {
+    margin-bottom: 2rem;
+}
+
+/* Progress card */
+.gamification-card {
+    background: var(--color-surface);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: background 0.3s ease;
+    max-width: 480px;
+}
+
+/* XP header row */
+.xp-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.xp-level-badge {
+    flex-shrink: 0;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4361ee 0%, #7b9cff 100%);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 2px 8px rgba(67, 97, 238, 0.35);
+}
+
+.xp-level-badge span {
+    font-size: 1.4rem;
+    line-height: 1;
+    letter-spacing: 0;
+}
+
+.xp-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.xp-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.4rem;
+}
+
+.xp-label {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--color-text);
+}
+
+.xp-fraction {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+}
+
+.xp-bar-track {
+    width: 100%;
+    height: 10px;
+    background: var(--color-border);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.xp-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4361ee 0%, #7b9cff 100%);
+    border-radius: 5px;
+    transition: width 0.6s ease;
+    min-width: 2px;
+}
+
+/* XP summary stats */
+.xp-stats-row {
+    display: flex;
+    gap: 1rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1rem;
+}
+
+.xp-stat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+}
+
+.xp-stat-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #4361ee;
+}
+
+.xp-stat-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+}
+
+/* Achievement badges grid */
+.badges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 0.75rem;
+    max-width: 520px;
+}
+
+.badge-card {
+    background: var(--color-surface);
+    border-radius: 10px;
+    padding: 1rem 0.75rem;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.3s ease;
+    cursor: default;
+}
+
+.badge-card.earned {
+    border: 2px solid #4361ee22;
+}
+
+.badge-card.earned:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(67, 97, 238, 0.18);
+}
+
+.badge-card.locked {
+    opacity: 0.42;
+    filter: grayscale(0.6);
+}
+
+.badge-icon {
+    font-size: 1.8rem;
+    line-height: 1;
+}
+
+.badge-name {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.badge-desc {
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    line-height: 1.3;
+}
+
+/* Stats chart section */
+.stats-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.stats-tab {
+    padding: 0.3rem 0.9rem;
+    border: 2px solid var(--color-border);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.stats-tab:hover {
+    border-color: #4361ee;
+    color: #4361ee;
+}
+
+.stats-tab.active {
+    background: #4361ee;
+    border-color: #4361ee;
+    color: #fff;
+}
+
+.stats-chart-svg {
+    display: block;
+    width: 100%;
+    max-width: 340px;
+    overflow: visible;
+    color: var(--color-text);
+    --chart-bar: #94a3b8;
+}
+
+[data-theme="dark"] .stats-chart-svg,
+[data-theme="focus"] .stats-chart-svg {
+    --chart-bar: #4a5568;
+}
+
+/* ===== Achievement toast ===== */
+#toast-container {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 300;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    pointer-events: none;
+}
+
+.achievement-toast {
+    background: #1a1a2e;
+    color: #fff;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    pointer-events: auto;
+    max-width: 320px;
+}
+
+.achievement-toast.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Focus mode: hide gamification sections to maintain focus */
+[data-theme="focus"] .gamification-section {
+    opacity: 0.25;
+    pointer-events: none;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .badges-grid { grid-template-columns: repeat(2, 1fr); }
+    .xp-stats-row { gap: 0.5rem; }
+    .gamification-card { padding: 1rem; }
+}
