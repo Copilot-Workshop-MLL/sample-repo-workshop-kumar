@@ -1,3 +1,49 @@
+/* ===== Theme Variables ===== */
+:root {
+    --color-bg: #f0f2f5;
+    --color-surface: #fff;
+    --color-text: #1a1a2e;
+    --color-text-muted: #6c757d;
+    --color-border: #e9ecef;
+    --color-navbar-bg: #1a1a2e;
+    --color-navbar-text: #fff;
+    --color-table-header: #f8f9fa;
+    --color-row-hover: #f8f9fa;
+    --color-input-border: #ced4da;
+    --color-input-focus: #4361ee;
+    --color-link: #4361ee;
+}
+
+[data-theme="dark"] {
+    --color-bg: #12122a;
+    --color-surface: #1e2d55;
+    --color-text: #e0e0f0;
+    --color-text-muted: #9090b0;
+    --color-border: #2e3f70;
+    --color-navbar-bg: #0d0d1a;
+    --color-navbar-text: #e0e0f0;
+    --color-table-header: #162244;
+    --color-row-hover: #243b6b;
+    --color-input-border: #3a4a7a;
+    --color-input-focus: #6b8cff;
+    --color-link: #7b9cff;
+}
+
+[data-theme="focus"] {
+    --color-bg: #0d0d1a;
+    --color-surface: #12122a;
+    --color-text: #c8c8e0;
+    --color-text-muted: #7070a0;
+    --color-border: #1e1e3a;
+    --color-navbar-bg: #080812;
+    --color-navbar-text: #c8c8e0;
+    --color-table-header: #0d0d1a;
+    --color-row-hover: #1a1a2e;
+    --color-input-border: #2a2a4a;
+    --color-input-focus: #4361ee;
+    --color-link: #6b8cff;
+}
+
 /* ===== Reset & Base ===== */
 *, *::before, *::after {
     box-sizing: border-box;
@@ -7,19 +53,20 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
-    background: #f0f2f5;
-    color: #1a1a2e;
+    background: var(--color-bg);
+    color: var(--color-text);
     line-height: 1.6;
     min-height: 100vh;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
-a { color: #4361ee; text-decoration: none; }
+a { color: var(--color-link); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 /* ===== Navbar ===== */
 .navbar {
-    background: #1a1a2e;
-    color: #fff;
+    background: var(--color-navbar-bg);
+    color: var(--color-navbar-text);
     padding: 0.75rem 1.5rem;
     display: flex;
     align-items: center;
@@ -27,17 +74,18 @@ a:hover { text-decoration: underline; }
     position: sticky;
     top: 0;
     z-index: 100;
+    transition: background 0.3s ease;
 }
 
 .navbar .brand {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #fff;
+    color: var(--color-navbar-text);
 }
 
 .navbar nav { display: flex; gap: 1rem; align-items: center; }
-.navbar nav a { color: #e0e0e0; font-size: 0.9rem; }
-.navbar nav a:hover { color: #fff; }
+.navbar nav a { color: var(--color-navbar-text); opacity: 0.85; font-size: 0.9rem; }
+.navbar nav a:hover { opacity: 1; }
 
 .btn-logout {
     background: #e63946;
@@ -99,17 +147,18 @@ a:hover { text-decoration: underline; }
 }
 
 .stat-card {
-    background: #fff;
+    background: var(--color-surface);
     border-radius: 8px;
     padding: 1.5rem;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     text-align: center;
+    transition: background 0.3s ease;
 }
 
 .stat-card h3 {
     font-size: 0.85rem;
     text-transform: uppercase;
-    color: #6c757d;
+    color: var(--color-text-muted);
     margin-bottom: 0.5rem;
 }
 
@@ -129,7 +178,7 @@ a:hover { text-decoration: underline; }
 }
 
 .auth-card {
-    background: #fff;
+    background: var(--color-surface);
     border-radius: 8px;
     padding: 2rem;
     width: 100%;
@@ -140,7 +189,7 @@ a:hover { text-decoration: underline; }
 .auth-card h1 {
     text-align: center;
     margin-bottom: 1.5rem;
-    color: #1a1a2e;
+    color: var(--color-text);
 }
 
 .form-group {
@@ -152,22 +201,24 @@ a:hover { text-decoration: underline; }
     font-size: 0.85rem;
     font-weight: 600;
     margin-bottom: 0.25rem;
-    color: #495057;
+    color: var(--color-text-muted);
 }
 
 .form-group input,
 .form-group select {
     width: 100%;
     padding: 0.6rem 0.75rem;
-    border: 1px solid #ced4da;
+    border: 1px solid var(--color-input-border);
     border-radius: 4px;
     font-size: 0.95rem;
+    background: var(--color-surface);
+    color: var(--color-text);
 }
 
 .form-group input:focus,
 .form-group select:focus {
     outline: none;
-    border-color: #4361ee;
+    border-color: var(--color-input-focus);
     box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
 }
 
@@ -217,10 +268,11 @@ a:hover { text-decoration: underline; }
 
 /* ===== Table ===== */
 .table-wrapper {
-    background: #fff;
+    background: var(--color-surface);
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     overflow-x: auto;
+    transition: background 0.3s ease;
 }
 
 table {
@@ -231,19 +283,19 @@ table {
 th, td {
     text-align: left;
     padding: 0.75rem 1rem;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid var(--color-border);
     white-space: nowrap;
 }
 
 th {
-    background: #f8f9fa;
+    background: var(--color-table-header);
     font-size: 0.8rem;
     text-transform: uppercase;
-    color: #6c757d;
+    color: var(--color-text-muted);
     font-weight: 700;
 }
 
-tr:hover { background: #f8f9fa; }
+tr:hover { background: var(--color-row-hover); }
 
 /* ===== Filters ===== */
 .filters {
@@ -268,7 +320,7 @@ tr:hover { background: #f8f9fa; }
 }
 
 .modal {
-    background: #fff;
+    background: var(--color-surface);
     border-radius: 8px;
     padding: 2rem;
     width: 100%;
@@ -278,7 +330,7 @@ tr:hover { background: #f8f9fa; }
     margin: 1rem;
 }
 
-.modal h2 { margin-bottom: 1rem; }
+.modal h2 { margin-bottom: 1rem; color: var(--color-text); }
 
 .modal-actions {
     display: flex;
@@ -297,13 +349,234 @@ tr:hover { background: #f8f9fa; }
     display: flex;
     justify-content: space-between;
     padding: 0.4rem 0;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--color-border);
     font-size: 0.9rem;
 }
 
 .breakdown-list li span:last-child {
     font-weight: 600;
+    color: var(--color-link);
+}
+
+/* ===== Section title ===== */
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+}
+
+/* ===== Pomodoro Focus Session ===== */
+.pomodoro-section {
+    margin-bottom: 2rem;
+}
+
+.pomodoro-card {
+    background: var(--color-surface);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    transition: background 0.3s ease;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* Circular timer ring */
+.timer-display {
+    position: relative;
+    width: 160px;
+    height: 160px;
+}
+
+.timer-ring {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.timer-ring-bg {
+    fill: none;
+    stroke: var(--color-border);
+    stroke-width: 8;
+}
+
+.timer-ring-progress {
+    fill: none;
+    stroke: #4361ee;
+    stroke-width: 8;
+    stroke-linecap: round;
+    /* dasharray = 2 * π * r = 2 * π * 54 ≈ 339.29, matches TIMER_RING_CIRCUMFERENCE in pomodoro.js */
+    stroke-dasharray: 339.29;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.8s ease, stroke 0.8s ease;
+}
+
+.timer-time {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 700;
     color: #4361ee;
+    letter-spacing: 0.04em;
+    transition: color 0.8s ease;
+}
+
+/* Duration selector */
+.duration-selector {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.duration-btn {
+    padding: 0.4rem 0.9rem;
+    border: 2px solid var(--color-border);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.duration-btn:hover {
+    border-color: #4361ee;
+    color: #4361ee;
+}
+
+.duration-btn.active {
+    background: #4361ee;
+    border-color: #4361ee;
+    color: #fff;
+}
+
+.duration-btn:disabled,
+.duration-btn[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Timer controls */
+.timer-controls {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 2px solid var(--color-border);
+    color: var(--color-text-muted);
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.btn-secondary:hover {
+    border-color: var(--color-text-muted);
+    color: var(--color-text);
+}
+
+/* Settings panel */
+.pomodoro-settings {
+    width: 100%;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.settings-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.settings-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    min-width: 52px;
+}
+
+/* Theme buttons */
+.theme-btns {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.theme-btn {
+    padding: 0.3rem 0.75rem;
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.theme-btn:hover {
+    border-color: #4361ee;
+    color: #4361ee;
+}
+
+.theme-btn.active {
+    background: #4361ee;
+    border-color: #4361ee;
+    color: #fff;
+}
+
+/* Sound toggles */
+.sound-toggles {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.sound-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    color: var(--color-text);
+    cursor: pointer;
+}
+
+.sound-toggle input[type="checkbox"] {
+    accent-color: #4361ee;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+/* ===== Focus mode: hide non-essential sections ===== */
+[data-theme="focus"] .breakdown-section,
+[data-theme="focus"] .welcome-panel {
+    display: none;
+}
+
+[data-theme="focus"] .stats-grid:not(.breakdown-section) {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+[data-theme="focus"] .pomodoro-card {
+    box-shadow: 0 0 30px rgba(67, 97, 238, 0.15);
 }
 
 /* ===== Responsive ===== */
@@ -313,9 +586,12 @@ tr:hover { background: #f8f9fa; }
     .filters { flex-direction: column; }
     .modal { margin: 0.5rem; padding: 1.5rem; }
     .welcome-panel { padding: 1.5rem; }
+    .pomodoro-card { padding: 1.5rem; }
 }
 
 @media (max-width: 480px) {
     .stats-grid { grid-template-columns: 1fr; }
     th, td { padding: 0.5rem 0.6rem; font-size: 0.85rem; }
+    .timer-display { width: 140px; height: 140px; }
+    .timer-time { font-size: 1.7rem; }
 }
